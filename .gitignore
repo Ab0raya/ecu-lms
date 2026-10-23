@@ -5,11 +5,15 @@ __pycache__/
 *.pyc
 *.pyo
 
-# Android / Capacitor builds
+# Android / Capacitor / Flutter builds
 mobile_app/android/app/build/
 mobile_app/android/.gradle/
 mobile_app/node_modules/
 mobile_app/android/local.properties
+flutter_app/build/
+flutter_app/.dart_tool/
+*.apk
 
 # Logs
 *.log
+

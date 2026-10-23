@@ -64,6 +64,17 @@ def download_apk():
         )
     return {"error": "APK not found"}
 
+@app.get("/download-flutter-apk")
+def download_flutter_apk():
+    apk_path = BASE_DIR / "ecu-lms-flutter.apk"
+    if apk_path.exists():
+        return FileResponse(
+            apk_path,
+            media_type="application/vnd.android.package-archive",
+            filename="ECU-LMS-Flutter.apk"
+        )
+    return {"error": "Flutter APK not found"}
+
 @app.get("/")
 def serve_index():
     index_path = static_dir / "index.html"
