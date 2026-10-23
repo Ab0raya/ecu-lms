@@ -48,8 +48,19 @@ class _HomeScreenState extends State<HomeScreen> {
     final success = await Navigator.of(context).push<bool>(
       MaterialPageRoute(builder: (_) => const LoginWebViewScreen()),
     );
-    if (success == true) {
-      _loadData();
+    if (success == true ||
+        (ApiService().moodleSession != null &&
+            ApiService().moodleSession!.isNotEmpty)) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('⏳ جاري جلب مقرراتك وواجباتك من الجامعة...'),
+            backgroundColor: Color(0xFF4F46E5),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+      await _loadData();
     }
   }
 
@@ -164,6 +175,62 @@ class _HomeScreenState extends State<HomeScreen> {
       child: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          if (ApiService().moodleSession == null ||
+              ApiService().moodleSession!.isEmpty)
+            Container(
+              margin: const EdgeInsets.only(bottom: 16),
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF312E81), Color(0xFF1E1B4B)],
+                ),
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(
+                  color: const Color(0xFF6366F1).withValues(alpha: 0.4),
+                ),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.lock_outline,
+                      color: Color(0xFF818CF8), size: 28),
+                  const SizedBox(width: 12),
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'تسجيل الدخول إلى حساب الجامعة',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                        ),
+                        SizedBox(height: 2),
+                        Text(
+                          'اضغط للدخول بحساب Microsoft Entra ومزامنة كورساتك الحقيقية',
+                          style: TextStyle(color: Colors.white70, fontSize: 11),
+                        ),
+                      ],
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: _openLogin,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF4F46E5),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 14, vertical: 8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Text('دخول'),
+                  ),
+                ],
+              ),
+            ),
+
           // Student Hero Card
           Container(
             padding: const EdgeInsets.all(16),
