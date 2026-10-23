@@ -178,6 +178,16 @@
           <button class="sheet-close-btn" aria-label="Close">&times;</button>
         </div>
         <div>
+          <!-- Automatic In-App Login Button -->
+          <button type="button" class="btn-primary" onclick="triggerInAppLogin()" style="margin-bottom: 14px; background: linear-gradient(135deg, #10b981, #059669); font-size: 0.95rem; padding: 14px; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 20px rgba(16, 185, 129, 0.35);">
+            <span style="font-size: 1.25rem;">🔐</span>
+            <span>تسجيل الدخول التلقائي (In-App Login)</span>
+          </button>
+
+          <div style="text-align: center; color: var(--text-dim); font-size: 0.72rem; margin-bottom: 14px;">
+            ── أو إدخال الكوكي يدوياً كخيار بديل ──
+          </div>
+
           <div class="sync-guide-box">
             <h4 style="font-size: 0.92rem; font-weight: 700; color: #fff; margin-bottom: 4px;">⚡ How to Connect your ECU Session</h4>
             <p style="font-size: 0.78rem; color: var(--text-muted);">Because ECU LMS is protected by Cloudflare and Microsoft Entra ID (OIDC), your active session cookie allows Scrapling to securely fetch your live courses.</p>

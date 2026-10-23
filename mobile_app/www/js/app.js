@@ -455,6 +455,36 @@ function openSyncModal() {
   }
 }
 
+// In-App Login Auto-Capture Trigger
+function triggerInAppLogin() {
+  if (window.ECUNativeAuth && typeof window.ECUNativeAuth.openInAppLogin === 'function') {
+    showToast('جاري فتح تسجيل دخول جامعة ECU...', 'info');
+    window.ECUNativeAuth.openInAppLogin();
+  } else {
+    // Web / browser popup fallback
+    showToast('جاري فتح نافذة تسجيل الدخول...', 'info');
+    const loginWin = window.open('https://lms.ecu.edu.eg/auth/oidc/', 'ecu_login', 'width=520,height=700');
+    if (!loginWin) {
+      showToast('يرجى السماح بالنوافذ المنبثقة (Popups) لإتمام تسجيل الدخول', 'error');
+    }
+  }
+}
+
+// Global Callback when Android WebView captures MoodleSession
+window.onNativeLoginSuccess = async function(token) {
+  if (!token) return;
+  showToast('✅ تم تسجيل الدخول تلقائياً! جاري تحميل الكورسات...', 'success');
+  localStorage.setItem('ecu_moodle_session', token);
+  try {
+    await API.setSession(token);
+  } catch (e) {
+    console.error('Session sync error:', e);
+  }
+  const modal = document.getElementById('syncModal');
+  if (modal) modal.classList.remove('open');
+  await loadInitialData();
+};
+
 function saveServerUrl() {
   const serverInput = document.getElementById('serverUrlInput');
   if (!serverInput) return;
