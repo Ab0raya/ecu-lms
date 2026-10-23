@@ -1,0 +1,12 @@
+{
+  "appId": "eg.edu.ecu.lms",
+  "appName": "ECU LMS",
+  "webDir": "www",
+  "server": {
+    "cleartext": true,
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": true
+  }
+}

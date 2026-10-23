@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">ECU LMS</string>
+    <string name="title_activity_main">ECU LMS</string>
+    <string name="package_name">eg.edu.ecu.lms</string>
+    <string name="custom_url_scheme">eg.edu.ecu.lms</string>
+</resources>

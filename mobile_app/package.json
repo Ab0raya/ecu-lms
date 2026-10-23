@@ -1,0 +1,15 @@
+{
+  "name": "ecu-lms-mobile",
+  "version": "1.0.0",
+  "description": "ECU LMS Mobile Application powered by Capacitor",
+  "scripts": {
+    "sync": "cap sync",
+    "open:android": "cap open android",
+    "build:apk": "cd android && ./gradlew assembleDebug"
+  },
+  "dependencies": {
+    "@capacitor/android": "^7.0.1",
+    "@capacitor/cli": "^7.0.1",
+    "@capacitor/core": "^7.0.1"
+  }
+}

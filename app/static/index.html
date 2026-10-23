@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>ECU LMS — Mobile Companion</title>
+  
+  <!-- PWA Meta Tags -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#080c14">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="ECU LMS">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/static/css/app.css">
+  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/3135/3135755.png">
+</head>
+<body>
+
+  <!-- App Mobile Frame -->
+  <div class="app-viewport">
+    
+    <!-- App Header -->
+    <header class="app-header">
+      <div class="brand-section">
+        <div class="brand-logo-badge">ECU</div>
+        <div class="brand-text">
+          <h1>LMS Mobile <span class="badge-tag">Scrapling</span></h1>
+          <p>Egyptian Chinese University</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="syncStatusBtn" class="sync-status-btn" title="LMS Connection Status">
+          <span class="pulse-dot"></span>
+          <span>Cloudflare Synced</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Scrollable Content -->
+    <main class="main-content">
+      
+      <!-- Demo Notice Banner -->
+      <div id="demoNoticeBanner" class="demo-notice-banner" onclick="openSyncModal()">
+        <span style="font-size: 1.2rem;">💡</span>
+        <div class="demo-banner-text">
+          <strong>وضع تجريبي (Demo Mode)</strong>: البيانات المعروضة حالياً افتراضية. اضغط هنا لربط حسابك وسحب كورساتك الحقيقية من ECU LMS.
+        </div>
+        <button class="btn-connect-pill">ربط الحساب ↗</button>
+      </div>
+
+      <!-- Student Card -->
+      <section class="student-card">
+        <div class="student-card-top">
+          <div class="student-info">
+            <div class="avatar-wrapper">
+              <img id="studentAvatar" class="avatar-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="Avatar">
+            </div>
+            <div>
+              <h2 id="studentName" class="student-name">Ahmed Mansour</h2>
+              <p id="studentRole" class="student-role">Engineering & Technology • Student</p>
+            </div>
+          </div>
+        </div>
+        <div class="quick-stats-row">
+          <div class="stat-item">
+            <div id="statCoursesCount" class="stat-number">5</div>
+            <div class="stat-label">Courses</div>
+          </div>
+          <div class="stat-item">
+            <div id="statPendingCount" class="stat-number">3</div>
+            <div class="stat-label">Deadlines</div>
+          </div>
+          <div class="stat-item">
+            <div id="statGpa" class="stat-number">3.82</div>
+            <div class="stat-label">Term GPA</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 1: COURSES -->
+      <section id="tab-courses" class="tab-view">
+        <div class="search-container">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="courseSearchInput" class="search-input" placeholder="Search courses, codes, topics...">
+        </div>
+
+        <div class="section-title-row">
+          <h2 class="section-title">
+            <span>Enrolled Courses</span>
+            <span class="section-badge">Spring 2026</span>
+          </h2>
+        </div>
+
+        <div id="coursesContainer" class="courses-list">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- TAB 2: ASSIGNMENTS -->
+      <section id="tab-assignments" class="tab-view" style="display: none;">
+        <div class="section-title-row">
+          <h2 class="section-title">
+            <span>Assignments & Quizzes</span>
+            <span class="section-badge">Upcoming</span>
+          </h2>
+        </div>
+
+        <div id="assignmentsContainer" class="assignments-list">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- TAB 3: GRADES -->
+      <section id="tab-grades" class="tab-view" style="display: none;">
+        <div class="section-title-row">
+          <h2 class="section-title">
+            <span>Grades & Assessments</span>
+            <span class="section-badge">Evaluation</span>
+          </h2>
+        </div>
+
+        <div id="gradesContainer">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- TAB 4: PROFILE -->
+      <section id="tab-profile" class="tab-view" style="display: none;">
+        <div id="profileContainer">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Floating Bottom Navigation -->
+    <nav class="bottom-nav">
+      <a href="#courses" class="nav-item active" data-tab="courses" id="nav-btn-courses">
+        <span class="nav-icon">📚</span>
+        <span>Courses</span>
+      </a>
+      <a href="#assignments" class="nav-item" data-tab="assignments" id="nav-btn-assignments">
+        <span class="nav-icon">📅</span>
+        <span>Deadlines</span>
+      </a>
+      <a href="#grades" class="nav-item" data-tab="grades" id="nav-btn-grades">
+        <span class="nav-icon">🏆</span>
+        <span>Grades</span>
+      </a>
+      <a href="#profile" class="nav-item" data-tab="profile" id="nav-btn-profile">
+        <span class="nav-icon">👤</span>
+        <span>Profile</span>
+      </a>
+    </nav>
+
+    <!-- Course Detail Sheet Modal -->
+    <div id="courseDetailModal" class="modal-overlay">
+      <div class="modal-sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+          <h3 id="detailCourseTitle" class="sheet-title">Course Topics</h3>
+          <button class="sheet-close-btn" aria-label="Close">&times;</button>
+        </div>
+        <div id="detailCourseBody">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Sync Session Modal -->
+    <div id="syncModal" class="modal-overlay">
+      <div class="modal-sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+          <h3 class="sheet-title">Connect ECU LMS Session</h3>
+          <button class="sheet-close-btn" aria-label="Close">&times;</button>
+        </div>
+        <div>
+          <div class="sync-guide-box">
+            <h4 style="font-size: 0.92rem; font-weight: 700; color: #fff; margin-bottom: 4px;">⚡ How to Connect your ECU Session</h4>
+            <p style="font-size: 0.78rem; color: var(--text-muted);">Because ECU LMS is protected by Cloudflare and Microsoft Entra ID (OIDC), your active session cookie allows Scrapling to securely fetch your live courses.</p>
+            
+            <div class="sync-step">
+              <span class="step-num">1</span>
+              <div>Log into <strong>lms.ecu.edu.eg</strong> in your browser with your university Microsoft account.</div>
+            </div>
+            <div class="sync-step">
+              <span class="step-num">2</span>
+              <div>Open browser Developer Tools (F12) → <strong>Application / Storage</strong> → <strong>Cookies</strong> → copy the value of <strong>MoodleSession</strong>.</div>
+            </div>
+            <div class="sync-step">
+              <span class="step-num">3</span>
+              <div>Paste your <strong>MoodleSession</strong> value below:</div>
+            </div>
+          </div>
+
+          <form id="syncSessionForm">
+            <input type="text" id="sessionCookieInput" class="search-input" placeholder="Paste MoodleSession cookie here..." style="margin-bottom: 12px; font-family: monospace;">
+            <button type="submit" class="btn-primary" id="btnConnectSession">
+              Connect & Verify Session
+            </button>
+          </form>
+
+          <button class="btn-secondary" onclick="copyBookmarklet()" style="margin-top: 10px;">
+            📋 Copy 1-Tap Cookie Bookmarklet
+          </button>
+
+          <button class="btn-secondary" onclick="applyDemoSession()" style="margin-top: 8px; border-color: rgba(99, 102, 241, 0.4); color: var(--primary-light);">
+            🚀 Explore with ECU Demo Courses
+          </button>
+
+          <!-- Cloud Server Setting -->
+          <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border-subtle);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <label for="serverUrlInput" style="font-size: 0.8rem; font-weight: 700; color: #fff;">🌐 Cloud Server URL (رابط السيرفر السحابي)</label>
+              <span id="currentServerBadge" style="font-size: 0.68rem; color: var(--accent-emerald);">Cloud Ready</span>
+            </div>
+            <input type="url" id="serverUrlInput" class="search-input" placeholder="e.g. https://ecu-lms.onrender.com" style="margin-bottom: 8px; font-size: 0.8rem;">
+            <button type="button" class="btn-secondary" onclick="saveServerUrl()" style="margin-top: 0; padding: 10px; font-size: 0.8rem;">
+              💾 Save Cloud Server URL
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+  </div>
+
+  <!-- JavaScript Client Files -->
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/store.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
